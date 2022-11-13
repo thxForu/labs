@@ -1,47 +1,70 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script defer src="{{asset('js/app.js')}}"></script>
-</head>
-<body class="antialiased">
-<body class="font-sans antialiased">
-<div class="w-96 min-h-screen bg-gray-100">
-    <div class="w-96 flex justify-end">
-        <a href="/users/create">
-            <x-button class="flex items-center text-sm pr-20">
-                Create
-            </x-button>
-        </a>
-    </div>
-    <table class="mx-auto text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-gray-700 uppercase dark:bg-gray-900 dark:text-white">
-        <tr>
-            <th scope="col" class="py-3 px-6 text-start">ID</th>
-            <th scope="col" class="py-3 px-6">Name</th>
-            <th scope="col" class="py-3 px-6">Email</th>
-            <th scope="col" class="py-3 px-6"></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach ($users as $user)
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <a href="/users/{{ $user->id }}">{{ $user->id }}</a>
-                </td>
-                <td class="py-4 px-6">{{ $user->name }}</td>
-                <td class="py-4 px-6">{{ $user->email }}</td>
-                <td class="py-4 px-6">
-                    <form action="/users/{{ $user->id }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <x-button class="text-red-700">Delete</x-button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-bold text-xl text-blue-600 leading-tight">
+            {{ __('Users') }}
+        </h2>
+    </x-slot>
+
+    <section class="antialiased  text-blue-600 px-4 pt-6">
+        <div class="flex flex-col h-full">
+            <div class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-blue-200">
+                <header class="px-5 py-4 border-b ">
+                    <h1>
+                        <a href="{{ route('users.create') }}" class="font-bold text-blue-600 hover:text-blue-400">Create New User</a>
+                    </h1>
+                </header>
+                <div class="p-3">
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full">
+                            <thead class="text-xs font-semibold uppercase text-blue-400 bg-blue-50">
+                            <tr>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">ID</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Name</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Email</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-center">Action</div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-sm divide-y divide-blue-100">
+                            @foreach($users as $user)
+                                <tr>
+                                    <td class="p-2 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="font-medium text-blue-800">{{ $user->id }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 whitespace-nowrap">
+                                        <div class="text-left">{{ $user->name }}</div>
+                                    </td>
+                                    <td class="p-2 whitespace-nowrap">
+                                        <div class="text-left font-medium text-blue-800">{{ $user->email }}</div>
+                                    </td>
+                                    <td class="p-2 whitespace-nowrap">
+                                        <a href="{{ route('users.show',$user->id) }}" class="text-left font-medium text-blue-800 hover:text-blue-400">Show</a> |
+                                        <a href="{{ route('users.edit',$user->id) }}" class="text-left font-medium text-blue-800 hover:text-blue-400">Edit</a> |
+                                        <form class="text-left font-medium text-red-600 hover:text-red-300" action=" {{route('users.destroy',$user->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Are you sure you want to delete {{ $user->name }}?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        <br />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</x-app-layout>
