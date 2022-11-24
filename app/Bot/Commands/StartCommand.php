@@ -27,7 +27,6 @@ class StartCommand extends Command
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
         $this->replyWithMessage(['text' => 'Hello! Welcome to our bot, Here are our available commands:']);
-        $id = auth()->user()->id;
 
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
@@ -44,10 +43,19 @@ class StartCommand extends Command
             $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
         }
 
+
+
+        $messageId = $response->getMessageId();
+
         // Reply with the commands list
         $this->replyWithMessage(['text' => $response]);
+        $id = auth()->user()->id;
         $this->replyWithMessage(['text' => $id]);
 
+        $response = Telegram::sendMessage([
+            'chat_id' => $id,
+            'text' => 'Hello World'
+        ]);
 
         // Trigger another command dynamically from within this command
         // When you want to chain multiple commands within one or process the request further.
