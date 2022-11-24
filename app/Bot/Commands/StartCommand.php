@@ -29,13 +29,13 @@ class StartCommand extends Command
         $this->replyWithMessage(['text' => 'Hello! Welcome to our bot, Here are our available commands:']);
         $id = auth()->user()->id;
 
-        $this->replyWithMessage(['text' => $id]);
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         // This will prepare a list of available commands and send the user.
         // First, Get an array of all registered commands
         // They'll be in 'command-name' => 'Command Handler Class' format.
+        $this->getUpdate([]);
         $commands = $this->getTelegram()->getCommands();
 
         // Build the list
@@ -46,6 +46,8 @@ class StartCommand extends Command
 
         // Reply with the commands list
         $this->replyWithMessage(['text' => $response]);
+        $this->replyWithMessage(['text' => $id]);
+
 
         // Trigger another command dynamically from within this command
         // When you want to chain multiple commands within one or process the request further.
