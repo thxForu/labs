@@ -27,7 +27,9 @@ class StartCommand extends Command
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
         $this->replyWithMessage(['text' => 'Hello! Welcome to our bot, Here are our available commands:']);
+        $id = auth()->user()->id;
 
+        $this->replyWithMessage(['text' => $id]);
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
