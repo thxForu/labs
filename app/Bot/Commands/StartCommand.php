@@ -43,8 +43,6 @@ class StartCommand extends Command
             $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
         }
 
-
-
         $messageId = $response->getMessageId();
 
         // Reply with the commands list
